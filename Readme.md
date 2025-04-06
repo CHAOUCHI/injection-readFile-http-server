@@ -24,28 +24,30 @@ Rendez-vous dans le code source du client http node. Pour voir comment est-ce qu
 new CustomHTTPRequest(3050, "127.0.0.1", "/../app.js");
 ```
 
-## Quel à été l'attaque ?
+## Quelle à été l'attaque ?
 
 **Le client TCP réussi à récupérer le code source du serveur alors qu'il se trouve en dehors du dossier public, ce qui constitue une faille de sécurité pour ce serveur.**
 
 Pour ce faire, il effectue une injection (`"/../app.js"`) en prévoyant à l'avance le fait que readFile va effectuer une commande dans le file system Linux. 
 
-Ici je récupère simplement le code source du serveur mais je pourrait aussi accéder au fichier personnel de l'utilisateur qui à lancer le server.
+Ici je récupère simplement le code source du serveur mais je pourrais aussi accéder aux fichiers personnels de l'utilisateur qui a lancer le serveur.
 
 ```js
 new CustomHTTPRequest(3050, "127.0.0.1", "/../../../../../../../../../../../home/massinissa/.bashrc");
 ```
 
-Parfois l'utilisateur root qui lance les programmes sur le serveur
+> Remplacez massinissa par votre username linux.
+
+Parfois l'utilisateur c'est directement root qui lance les programmes sur le serveur
 ```bash
 cd http-server-non-secure
 sudo node app.js 
 ```
 
-A cause de cette faille je peux aussi accéder au dossier personnel du root.
+A cause de cette faille, dans ce cas, je peux accéder au dossier personnel de l'utilisateur root.
 
 ```js
 new CustomHTTPRequest(3050, "127.0.0.1", "/../../../../../../../../../../../root/.bashrc");
 ```
 
-Faite donc très attention à toujours respecter la regle du Least Privileges : https://en.wikipedia.org/wiki/Principle_of_least_privilege
+Faite donc très attention à toujours respecter la règle du Least Privileges : https://en.wikipedia.org/wiki/Principle_of_least_privilege
