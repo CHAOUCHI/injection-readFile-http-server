@@ -50,4 +50,16 @@ A cause de cette faille, dans ce cas, je peux accéder au dossier personnel de l
 new CustomHTTPRequest(3050, "127.0.0.1", "/../../../../../../../../../../../root/.bashrc");
 ```
 
+## Comment se protéger contre une injection ?
+Une injection peut se produire quand une entréee utilisateur est fournit à un interpréteur (ici l'interpreteur bash).
+
+Pour se protéger contre une injection il faut sanitariser l'entrée utilisateur, c'est à dire retirer les données dangereuses avant la concaténation du readFile voir même refuser la requete du client si la requete est non-conforme.
+
+Par exemple
+```js
+req.url = req.url.replaceAll("../","");
+```
+
+ > Personnelement, je pense que le mieux est encore d'utiliser une regex pour valider l'uri envoyé par l'utilisateur.
+
 Faite donc très attention à toujours respecter la règle du Least Privileges : https://en.wikipedia.org/wiki/Principle_of_least_privilege
